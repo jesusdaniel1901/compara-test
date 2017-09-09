@@ -20,15 +20,7 @@ class Login
 
   # Checks if user exists
   def user_exists(user)
-    # Temp variable for storing the user if found
-    temp = ''
-    for i in users
-      if i == user
-        temp = user
-      end
-    end
-    exists = temp != '' && temp == user
-    exists
+    users.include?(user)
   end
 
   # Register user
@@ -103,13 +95,13 @@ login.login('user4', 'pass4');
 login.update_password('user3', 'pass3', 'pass5');
 login.login('user3', 'pass5');
 # login.logout('user4');
-puts "LOGOUT #{login.logout('user3')}"
-puts "session #{login.sessions.inspect}"
+# puts "LOGOUT #{login.logout('user3')}"
+# puts "session #{login.sessions.inspect}"
 
 
-# puts("Registered Users: #{login.users}")
+puts("Registered Users: #{login.users}")
 # puts("Registered Passwords: #{login.passwords}")
-# puts("User -user1- exists? #{login.user_exists('user1')}")
+puts("User -user1- exists? #{login.user_exists('user1')}")
 # puts("User -user7- exists? #{login.user_exists('user7')}")
 # puts("Register -user9- pass: -pass9- #{login.register_user('user9', 'pass9')}")
 # puts("LOGIN: #{login.inspect}")
