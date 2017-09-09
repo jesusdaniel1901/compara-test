@@ -14,10 +14,8 @@ class Login
   end
 
   def logout(user)
-    sessions.each_with_index do |session, i|
-      sessions[i] = nil if session == user
-    end
-    sessions.compact!
+    session = sessions.find{ | session | session == user }
+    sessions.delete(session)
   end
 
   # Checks if user exists
@@ -104,24 +102,25 @@ login.register_user('user4', 'pass4');
 login.login('user4', 'pass4');
 login.update_password('user3', 'pass3', 'pass5');
 login.login('user3', 'pass5');
-login.logout('user4');
-login.logout('user3');
+# login.logout('user4');
+puts "LOGOUT #{login.logout('user3')}"
+puts "session #{login.sessions.inspect}"
 
 
-puts("Registered Users: #{login.users}")
-puts("Registered Passwords: #{login.passwords}")
-puts("User -user1- exists? #{login.user_exists('user1')}")
-puts("User -user7- exists? #{login.user_exists('user7')}")
-puts("Register -user9- pass: -pass9- #{login.register_user('user9', 'pass9')}")
-puts("LOGIN: #{login.inspect}")
-puts("User -user9- exists? #{login.user_exists('user9')}")
-puts("Change Password -user9- to -pass1000- #{login.update_password('user9', 'pass9', 'pass1000')}")
-puts("LOGIN: #{login.inspect}")
-puts("Login -user9- #{login.login('user9', 'pass1000')}")
-puts("LOGIN: #{login.inspect}")
-puts("Logout -user9- #{login.logout('user9')}")
-puts("LOGIN: #{login.inspect}")
-puts("Check password -user9- correct #{login.check_password('user9', 'pass1000')}")
-puts("Check password -user9- incorrect #{login.check_password('user9', 'pass9')}")
-puts("Remove User -user9- #{login.remove_user('user9')}")
-puts("LOGIN: #{login.inspect}")
+# puts("Registered Users: #{login.users}")
+# puts("Registered Passwords: #{login.passwords}")
+# puts("User -user1- exists? #{login.user_exists('user1')}")
+# puts("User -user7- exists? #{login.user_exists('user7')}")
+# puts("Register -user9- pass: -pass9- #{login.register_user('user9', 'pass9')}")
+# puts("LOGIN: #{login.inspect}")
+# puts("User -user9- exists? #{login.user_exists('user9')}")
+# puts("Change Password -user9- to -pass1000- #{login.update_password('user9', 'pass9', 'pass1000')}")
+# puts("LOGIN: #{login.inspect}")
+# puts("Login -user9- #{login.login('user9', 'pass1000')}")
+# puts("LOGIN: #{login.inspect}")
+# puts("Logout -user9- #{login.logout('user9')}")
+# puts("LOGIN: #{login.inspect}")
+# puts("Check password -user9- correct #{login.check_password('user9', 'pass1000')}")
+# puts("Check password -user9- incorrect #{login.check_password('user9', 'pass9')}")
+# puts("Remove User -user9- #{login.remove_user('user9')}")
+# puts("LOGIN: #{login.inspect}")
