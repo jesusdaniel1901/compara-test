@@ -1,15 +1,13 @@
 # This class is used for logins
 class Login
-  attr_reader :sessions, :users, :passwords
+  attr_reader :sessions, :users
 
   # Receives a hash with usernames as keys and passwords as values
   def initialize(hash_of_users)
     @sessions = []
-    @users = []
-    @passwords = []
+    @users = {}
     hash_of_users.map do |user,password|
-      @users.push(user)
-      @passwords.push(password)
+      @users[user] = password
     end
   end
 
@@ -20,63 +18,32 @@ class Login
 
   # Checks if user exists
   def user_exists(user)
-    users.include?(user)
+    @users.key?(user)
   end
 
   # Register user
   def register_user(user, password)
-    last_index = users.size
-    users[last_index] = user
-    passwords[last_index] = password
+    @users[user] = password
+    login(user,password)
   end
 
   def remove_user(user)
-    index = idx(user, users)
-    users[index] = nil
-    passwords[index] = nil
-    users.compact!
-    passwords.compact!
+    logout(user)
+    @users.delete(user)
   end
 
   def check_password(user, password)
-    index = idx(user, users)
-    password_correct = passwords[index] == password
-    return password_correct
+    @users[user] == password
   end
 
   def update_password(user, old_password, new_password)
-    # First we check if the user exists
-    user_1 = ''
-    for i in users
-      if i == user
-        user_1 = user
-      end
-    end
-    if user_1 == user
-      index = idx(user, users)
-      if passwords[index] == old_password
-        passwords[index] = new_password
-        return true
-      end
-    end
-    return false
+    return false if !@users.key?(user) || @users[user] != old_password
+    @users[user] = new_password and return true
   end
 
   def login(user, password)
-    index = idx(user, users)
-    if passwords[index] == password
-      sessions << user
-    end
-  end
-
-  # Gets index of an element in an array
-  def idx(element, array)
-    cont=0
-    for i in array
-      return cont if i == element
-      cont += 1
-    end
-    return cont
+    return false unless @users.key?(user)
+    sessions.push(user) and return true if @users[user] == password
   end
 end
 
@@ -91,17 +58,23 @@ registered_users = {
 login = Login.new(registered_users)
 
 login.register_user('user4', 'pass4');
-login.login('user4', 'pass4');
+
+# puts "CHECK PASSWORD #{login.check_password('user4','pass4')}"
+# puts "USER EXIST #{login.user_exists('user4')}"
+puts "REMOVE USER #{login.remove_user('user2')}"
+
+
 login.update_password('user3', 'pass3', 'pass5');
 login.login('user3', 'pass5');
+puts "LOGIN #{login.login('user4', 'pass4')} #{login.inspect}"
 # login.logout('user4');
 # puts "LOGOUT #{login.logout('user3')}"
 # puts "session #{login.sessions.inspect}"
 
 
-puts("Registered Users: #{login.users}")
+# puts("Registered Users: #{login.users}")
 # puts("Registered Passwords: #{login.passwords}")
-puts("User -user1- exists? #{login.user_exists('user1')}")
+# puts("User -user1- exists? #{login.user_exists('user1222')}")
 # puts("User -user7- exists? #{login.user_exists('user7')}")
 # puts("Register -user9- pass: -pass9- #{login.register_user('user9', 'pass9')}")
 # puts("LOGIN: #{login.inspect}")
